@@ -1,10 +1,71 @@
+import {
+  FiZap,
+  FiCloudRain,
+  FiHeart,
+  FiTarget,
+  FiSun,
+  FiMoon,
+  FiMusic,
+  FiSmile,
+} from "react-icons/fi";
+
 const TAGS = [
-  "⚡ Energico",
-  "🌧️ Malinconico",
-  "🌸 Romantico",
-  "🎯 Focus",
-  "☀️ Felice",
-  "🌙 Notturno",
+  {
+    label: "Energico",
+    icon: <FiZap />,
+    hoverClass: "group-hover:text-yellow-400",
+    bgColor: "bg-yellow-400/20",
+    borderColor: "border-yellow-400/20",
+  },
+  {
+    label: "Malinconico",
+    icon: <FiCloudRain />,
+    hoverClass: "group-hover:text-blue-300",
+    bgColor: "bg-blue-300/20",
+    borderColor: "border-blue-300/20",
+  },
+  {
+    label: "Romantico",
+    icon: <FiHeart />,
+    hoverClass: "group-hover:text-pink-500",
+    bgColor: "bg-pink-500/20",
+    borderColor: "border-pink-500/20",
+  },
+  {
+    label: "Focus",
+    icon: <FiTarget />,
+    hoverClass: "group-hover:text-violet-400",
+    bgColor: "bg-violet-400/20",
+    borderColor: "border-violet-400/20",
+  },
+  {
+    label: "Felice",
+    icon: <FiSun />,
+    hoverClass: "group-hover:text-yellow-300",
+    bgColor: "bg-yellow-300/20",
+    borderColor: "border-yellow-300/20",
+  },
+  {
+    label: "Notturno",
+    icon: <FiMoon />,
+    hoverClass: "group-hover:text-sky-400",
+    bgColor: "bg-sky-400/20",
+    borderColor: "border-sky-400/20",
+  },
+  {
+    label: "Relax",
+    icon: <FiMusic />,
+    hoverClass: "group-hover:text-green-400",
+    bgColor: "bg-green-400/20",
+    borderColor: "border-green-400/20",
+  },
+  {
+    label: "Allegria",
+    icon: <FiSmile />,
+    hoverClass: "group-hover:text-orange-400",
+    bgColor: "bg-orange-400/20",
+    borderColor: "border-orange-400/20",
+  },
 ];
 
 export default function MoodSelector({
@@ -15,9 +76,11 @@ export default function MoodSelector({
   onGenerate,
   loading,
 }) {
-  const toggleTag = (tag) => {
+  const toggleTag = (tagLabel) => {
     setSelectedTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
+      prev.includes(tagLabel)
+        ? prev.filter((t) => t !== tagLabel)
+        : [...prev, tagLabel],
     );
   };
 
@@ -30,18 +93,25 @@ export default function MoodSelector({
           How are you feeling?
         </p>
         <div className="flex flex-wrap gap-2">
-          {TAGS.map((tag) => (
+          {TAGS.map(({ label, icon, hoverClass, bgColor, borderColor }) => (
             <button
-              key={tag}
-              onClick={() => toggleTag(tag)}
-              className={`px-4 py-2 rounded-full text-sm font-medium border transition-all duration-200 cursor-pointer
+              key={label}
+              onClick={() => toggleTag(label)}
+              className={`group px-4 py-2 rounded-full text-sm font-medium border flex items-center gap-2 transition-all duration-200 cursor-pointer
                 ${
-                  selectedTags.includes(tag)
-                    ? "bg-violet-600 border-violet-600 text-white"
+                  selectedTags.includes(label)
+                    ? ` ${bgColor} ${borderColor} text-white`
                     : "bg-transparent border-zinc-700 text-zinc-400 hover:border-zinc-500 hover:text-white"
                 }`}
             >
-              {tag}
+              <span
+                className={`transition-colors duration-200 
+                ${selectedTags.includes(label) ? "text-white" : hoverClass}
+              `}
+              >
+                {icon}
+              </span>
+              <span>{label}</span>
             </button>
           ))}
         </div>
@@ -64,9 +134,16 @@ export default function MoodSelector({
         onClick={onGenerate}
         disabled={!canGenerate || loading}
         className="w-full py-3 rounded-xl font-semibold text-sm tracking-wide transition-all duration-200 cursor-pointer
-          bg-violet-600 hover:bg-violet-500 disabled:bg-zinc-800 disabled:text-zinc-600 disabled:cursor-not-allowed text-white"
+          bg-violet-600 hover:bg-violet-500 disabled:bg-zinc-800 disabled:text-zinc-600 disabled:cursor-not-allowed text-white flex items-center justify-center gap-2"
       >
-        {loading ? "Curating your playlist..." : "Generate Playlist ✨"}
+        {loading ? (
+          "Curating your playlist..."
+        ) : (
+          <>
+            <FiMusic size={18} />
+            Generate Playlist
+          </>
+        )}
       </button>
     </div>
   );

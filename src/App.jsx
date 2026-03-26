@@ -1,6 +1,7 @@
 import { useState } from "react";
 import MoodSelector from "./components/MoodSelector";
 import PlaylistResult from "./components/PlaylistResult";
+import { FiMusic } from "react-icons/fi";
 
 export default function App() {
   const [selectedTags, setSelectedTags] = useState([]);
@@ -24,7 +25,7 @@ export default function App() {
       );
       const data = await response.json();
       setPlaylist(data);
-      console.log("Generated playlist:", data);
+      // console.log("Generated playlist:", data);
     } catch (err) {
       console.error(err);
     } finally {
@@ -41,8 +42,9 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white flex flex-col items-center px-4 py-12">
       <header className="mb-10 text-center">
-        <h1 className="text-4xl font-bold tracking-tight text-white">
-          🎵 MoodTune
+        <h1 className="text-4xl font-bold tracking-tight text-white flex items-center justify-center gap-3">
+          <FiMusic className="text-violet-500" size={45} />
+          MoodTune
         </h1>
         <p className="text-zinc-400 mt-2 text-sm">
           Tell us how you feel. We'll find your soundtrack.
