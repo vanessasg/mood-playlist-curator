@@ -1,7 +1,6 @@
 import { useState } from "react";
 import MoodSelector from "./components/MoodSelector";
 import PlaylistResult from "./components/PlaylistResult";
-import { generatePlaylist } from "./data/mockAI";
 
 export default function App() {
   const [selectedTags, setSelectedTags] = useState([]);
@@ -13,10 +12,24 @@ export default function App() {
     if (selectedTags.length === 0 && !customText.trim()) return;
     setLoading(true);
     setPlaylist(null);
-    await new Promise((r) => setTimeout(r, 1800));
-    const result = generatePlaylist(selectedTags, customText);
-    setPlaylist(result);
-    setLoading(false);
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/generate`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tags: selectedTags, customText }),
+        },
+      );
+      const data = await response.json();
+      setPlaylist(data);
+      console.log("Generated playlist:", data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleReset = () => {

@@ -1,4 +1,12 @@
+import { FaSpotify, FaYoutube } from "react-icons/fa";
+
 export default function PlaylistResult({ playlist, onReset }) {
+  const getSpotifyLink = (track) =>
+    `https://open.spotify.com/search/${encodeURIComponent(track.query)}`;
+
+  const getYouTubeLink = (track) =>
+    `https://www.youtube.com/results?search_query=${encodeURIComponent(track.query)}`;
+
   return (
     <div className="w-full max-w-xl flex flex-col gap-6">
       <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
@@ -11,21 +19,41 @@ export default function PlaylistResult({ playlist, onReset }) {
 
       <div className="flex flex-col gap-2">
         {playlist.tracks.map((track, i) => (
-          <div
-            key={i}
-            className="flex items-start gap-4 bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 hover:border-zinc-600 transition-colors"
-          >
-            <span className="text-zinc-600 text-sm font-mono mt-0.5 w-5 shrink-0">
-              {String(i + 1).padStart(2, "0")}
-            </span>
-            <div className="flex flex-col">
-              <span className="text-white text-sm font-semibold">
-                {track.title}
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 hover:border-zinc-600 transition-colors">
+            <div key={i} className="flex items-start gap-4 ">
+              <span className="text-zinc-600 text-sm font-mono mt-0.5 w-5 shrink-0">
+                {String(i + 1).padStart(2, "0")}
               </span>
-              <span className="text-zinc-500 text-xs">{track.artist}</span>
-              <span className="text-zinc-600 text-xs mt-1 italic">
-                {track.note}
-              </span>
+              <div className="flex flex-col">
+                <span className="text-white text-sm font-semibold">
+                  {track.title}
+                </span>
+                <span className="text-zinc-500 text-xs">{track.artist}</span>
+                <span className="text-zinc-600 text-xs mt-1 italic">
+                  {track.note}
+                </span>
+              </div>
+            </div>
+            <div className="flex gap-4 ps-9 mt-3">
+              <a
+                href={getSpotifyLink(track)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-green-400 hover:text-green-300 transition"
+              >
+                <FaSpotify size={18} />
+                <span className="text-sm">Spotify</span>
+              </a>
+
+              <a
+                href={getYouTubeLink(track)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-red-400 hover:text-red-300 transition"
+              >
+                <FaYoutube size={18} />
+                <span className="text-sm">YouTube</span>
+              </a>
             </div>
           </div>
         ))}
