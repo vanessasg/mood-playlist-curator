@@ -1,71 +1,88 @@
-# MoodTune 🎵 AI-Powered Playlist Generator
+# MoodTune 🎵
+### AI-Powered Playlist Generator
 
-MoodTune è un’app web **AI-powered** che crea playlist musicali personalizzate in base al tuo umore e input testuali.  
-Seleziona i tuoi stati d’animo, scrivi una breve descrizione opzionale e lascia che l’Intelligenza Artificiale curi una playlist per te, con anteprima dei brani e link diretti a Spotify e YouTube.
+MoodTune è un'app web **AI-powered** che crea playlist musicali personalizzate in base al tuo umore e input testuali.
+Seleziona i tuoi stati d'animo, scrivi una descrizione opzionale e lascia che l'Intelligenza Artificiale curi una playlist per te — con anteprima audio reale e link diretti a Spotify e YouTube.
+
+🔗 **[Live Demo](https://vanessasg.github.io/mood-playlist-curator/)**
 
 ---
 
 ## 🚀 Features
 
-- 🎯 **AI-Powered**: genera playlist personalizzate usando input testuali e tag di mood.  
-- 🎵 **Audio Player integrato**: play/pause, progress bar cliccabile, gestione di più player 
-- 🌈 **Mood Selector interattivo**: tag colorati e icone animate che riflettono il mood.  
-- 💻 **Responsive Design**: ottimizzato per desktop e mobile.  
-- 🔗 **Link diretti**: apri le tracce su Spotify e YouTube.  
-- ✨ **Esperienza utente curata**: interfaccia scura, animazioni e transizioni fluide.
+- 🤖 **AI-Powered (Groq)** — playlist generate da un LLM reale tramite Groq API, basate su mood e testo libero
+- 🎵 **Audio Preview via Deezer** — ogni traccia include un'anteprima audio di 30s recuperata dalle API Deezer
+- ▶️ **Player audio integrato** — play/pause, progress bar cliccabile, gestione esclusiva tra più player
+- 🌈 **Mood Selector interattivo** — tag colorati con icone animate che riflettono il mood selezionato
+- 🔗 **Link diretti** — apri ogni traccia su Spotify o cercala su YouTube
+- 🔐 **API key protette** — chiamate AI gestite server-side tramite Vercel Serverless Functions
+- 💻 **Responsive Design** — ottimizzato per desktop e mobile
 
 ---
 
-## 🛠️ Tecnologie utilizzate
+## 🛠️ Stack tecnico
 
-- **React** – per il front-end dinamico e interattivo.  
-- **TailwindCSS** – layout, colori e animazioni moderne.  
-- **React Icons** – icone per tag e pulsanti.  
-- **HTML5 Audio API** – gestione dei brani audio.  
-- **Intelligenza Artificiale (AI)** – per generare playlist personalizzate in base al mood e al testo dell’utente.  
-- **JavaScript moderno (ES6+)** – logica dell’interfaccia e gestione dei componenti.
-
----
-
-## 🎨 UI / UX
-
-- Tema scuro con interfaccia minimalista.  
-- Tag di mood colorati, con hover animati.  
-- Progress bar cliccabile con aggiornamento in tempo reale.  
-- Pulsante **Generate Playlist** con icona musicale integrata.  
-- Input testuale opzionale per dettagli aggiuntivi sul mood.
+| Utilizzo | Tecnologia |
+|---|---|
+| Frontend | React + Vite |
+| Styling | TailwindCSS |
+| AI / LLM | [Groq API](https://groq.com) |
+| Audio Preview | [Deezer API](https://developers.deezer.com) |
+| Backend (serverless) | Vercel Functions (`/api`) |
+| Deploy | [Github](https://github.com/) |
 
 ---
 
-## 💻 Installazione
+## 🔐 Architettura API
 
-1. Clona il repository:
+Le chiamate all'AI non avvengono direttamente dal browser: passano attraverso una **Vercel Serverless Function** (`/api/generate.js`) che:
 
-```bash
-git clone https://github.com/tuo-username/moodtune.git
-cd moodtune
-```
-2. Installa le dipendenze:
-```bash
-npm install
-# oppure
-yarn install
-```
+1. Riceve mood e testo dall'utente
+2. Chiama Groq API con la chiave protetta lato server
+3. Arricchisce ogni traccia con una preview audio da Deezer
+4. Restituisce la playlist completa al client
+
 ---
 
 ## 📂 Struttura del progetto
-
 ```
 mood-playlist-curator/
-├─ public/                 # file statici e favicon
 ├─ src/
-│  ├─ components/          # componenti React (AudioPlayer, MoodSelector, PlaylistResult)
+│  ├─ components/     
+│  │  └── AudioPlayer.jsx
+│  │  └── MoodSelector.jsx
+│  │  └── PlaylistResult.jsx
 │  ├─ App.jsx              # componente principale
-│  ├─ main.jsx             # entry point
-│  └─ index.css            # stili Tailwind personalizzati
-├─ package.json
-└─ README.md
+│  ├─ index.css            # stili Tailwind personalizzati
+│  └─ main.jsx             # entry point
 ```
+
+---
+
+## 💻 Installazione locale
+
+1. Clona il repository:
+```bash
+git clone https://github.com/vanessasg/mood-playlist-curator.git
+cd mood-playlist-curator
+```
+
+2. Installa le dipendenze:
+```bash
+npm install
+```
+
+3. Crea il file `.env.local` nella root:
+```env
+GROQ_API_KEY=your_groq_api_key_here
+```
+
+4. Avvia il progetto :
+```bash
+npm run dev
+```
+
+> ⚠️ `npm run dev` avvia solo il frontend React.
 
 ---
 
